@@ -1,0 +1,49 @@
+Source: ros-fuerte-ros-comm
+Section: misc
+Priority: extra
+Maintainer: Ken Conley <kwc@willowgarage.com>
+Build-Depends: debhelper (>= 7.0.50~), python-yaml,ros-fuerte-ros,libboost-all-dev,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libapr1-dev,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
+Homepage: http://www.ros.org/wiki/ros_comm
+Standards-Version: 3.9.2
+
+Package: ros-fuerte-ros-comm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-yaml,ros-fuerte-ros,libboost-all-dev,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libapr1-dev,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
+Description: 
+    ROS communications-related packages, including core client libraries (roscpp, rospy, roslisp) and graph introspection tools (rostopic, rosnode, rosservice, rosparam).
+  
+ .
+ This stack contains the packages:
+ * rosconsole: ROS console output library.
+ * test_roscpp_serialization: Set of tests to test templated serialization, message generation, and using messages with custom allocators
+ * test_roscpp_serialization_perf: A simple performance test of the serialization/deserialization scheme, so we can get some decent numbers to target optimization efforts.
+ * rosgraph: rosgraph contains the rosgraph command-line tool, which prints information about the ROS Computation Graph. It also provides an internal library that is used by the graphical version of this tool, rxgraph.
+ * test_ros: ROS high-level (language-neutral) integration test framework.
+ * test_roslib_comm: Unit tests verifying that roslib is operating as expected.
+ * test_rostime: test_rostime
+ * roscpp: roscpp is a C++ implementation of ROS. It provides a client library that enables C++ programmers to quickly interface with ROS Topics, Services, and Parameters. roscpp is the most widely used ROS client library and is designed to be the high-performance library for ROS.
+ * rosparam: rosparam contains the rosparam command-line tool for getting and setting ROS Parameters on the Parameter Server using YAML-encoded files. It also contains an experimental library for using YAML with the Parameter Server. This library is intended for internal use only. rosparam can be invoked within a roslaunch file.
+ * rosout: System-wide logging mechanism for messages sent to the /rosout topic.
+ * test_crosspackage: This is a general purpose test package for placing things relevant to other tests where we want to verify that they work when going cross package. In particular, test_rosrecord, test_roslib, and test_rosbagmigration.
+ * topic_tools: Tools for directing, throttling, selecting, and otherwise messing with ROS topics at a meta level. None of the programs in this package actually know about the topics whose streams they are altering; instead, these tools deal with messages as generic binary blobs. This means they can be applied to any ROS topic.
+ * rostest: Integration test suite based on roslaunch that is compatible with xUnit frameworks.
+ * rostopic: rostopic contains the rostopic command-line tool for displaying debug information about ROS Topics, including publishers, subscribers, publishing rate, and ROS Messages. It also contains an experimental Python library for getting information about and interacting with topics dynamically. This library is for internal-use only as the code API may change, though it does provide examples of how to implement dynamic subscription and publication behaviors in ROS.
+ * test_rospy: rospy unit and integration test framework.
+ * roswtf: roswtf is a tool for diagnosing issues with a running ROS system. Think of it as a FAQ implemented in code.
+ * rosgraph_msgs: Messages relating to the ROS Computation Graph. These are generally considered to be low-level messages that end users do not interact with.
+ * roslisp: This package is a Lisp client library for ROS, the Robot Operating System.
+ * message_filters: A set of message filters which take in messages and may output those messages at a later time, based on the conditions that filter needs met.
+ * perf_roscpp: This is a set of performance tests for roscpp, mainly to provide numbers to optimize against.
+ * rosservice: rosservice contains the rosservice command-line tool for listing and querying ROS Services. It also contains a Python library for retrieving information about Services and dynamically invoking them. The Python library is experimental and is for internal-use only.
+ * rospy: rospy is a pure Python client library for ROS. The rospy client API enables Python programmers to quickly interface with ROS Topics, Services, and Parameters. The design of rospy favors implementation speed (i.e. developer time) over runtime performance so that algorithms can be quickly prototyped and tested within ROS. It is also ideal for non-critical-path code, such as configuration and initialization code. Many of the ROS tools are written in rospy to take advantage of the type introspection capabilities. Many of the ROS tools, such as rostopic and rosservice, are built on top of rospy.
+ * test_rosbag: A package for testing rosbag functionality.
+ * test_rosservice: Tests for the rosservice tool
+ * roslaunch: roslaunch is a tool for easily launching multiple ROS nodes locally and remotely via SSH, as well as setting parameters on the Parameter Server. It includes options to automatically respawn processes that have already died. roslaunch takes in one or more XML configuration files (with the .launch extension) that specify the parameters to set and nodes to launch, as well as the machines that they should be run on.
+ * test_roscpp: This package has a few test cases to make sure the C++ client library actually does what it claims to do and doesn't leak memory too badly.
+ * std_srvs: Common service definitions. Currently just the 'Empty' service.
+ * xmlrpcpp: XmlRpc++ is a C++ implementation of the XML-RPC protocol. This version is heavily modified from the package available on SourceForge in order to support roscpp's threading model. As such, we are maintaining our own fork.
+ * rosmaster: ROS Master implementation.
+ * rosmsg: rosmsg contains two command-line tools: rosmsg and rossrv. rosmsg is a command-line tool for displaying information about ROS Message types. rossrv is a command-line tool for displaying information about ROS Service types.
+ * rosnode: rosnode is a command-line tool for displaying debug information about ROS Nodes, including publications, subscriptions and connections. It also contains an experimental library for retrieving node information. This library is intended for internal use only.
+ * rosbag: This is a set of tools for recording from and playing back to ROS topics. It is intended to be high performance and avoids deserialization and reserialization of the messages.
+
