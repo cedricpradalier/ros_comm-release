@@ -1,0 +1,13 @@
+<package>
+  <catkin/>
+  <description brief="test_rosbag">
+
+    A package for testing rosbag functionality.
+
+  </description>
+  <author>Jeremy Leibs</author>
+  <license>BSD</license>
+  <review status="test" notes=""/>
+</package>
+
+

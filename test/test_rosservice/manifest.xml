@@ -1,0 +1,13 @@
+<package>
+  <catkin/>
+  <description brief="test_rosservice">
+
+     Tests for the rosservice tool
+
+  </description>
+  <author>Ken Conley</author>
+  <license>BSD</license>
+  <review status="test" notes=""/>
+</package>
+
+
