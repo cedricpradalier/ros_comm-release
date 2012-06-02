@@ -2,12 +2,12 @@ Source: ros-fuerte-ros-comm
 Section: misc
 Priority: extra
 Maintainer: Ken Conley <kwc@willowgarage.com>
-Build-Depends: debhelper (>= 7.0.50~), python-yaml,ros-fuerte-ros,libboost-all-dev,ros-fuerte-genmsg,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libapr1-dev,ros-fuerte-catkin,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
+Build-Depends: debhelper (>= 7.0.50~), python-yaml,ros-fuerte-ros,ros-fuerte-genmsg,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libboost1.46-all-dev,libapr1-dev,ros-fuerte-catkin,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
 Homepage: http://www.ros.org/wiki/ros_comm
 Standards-Version: 3.9.2
 
 Package: ros-fuerte-ros-comm
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, python-yaml,ros-fuerte-ros,libboost-all-dev,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libapr1-dev,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-yaml,ros-fuerte-ros,libboost1.46-all-dev,ros-fuerte-std-msgs,ros-fuerte-roscpp-core,libapr1-dev,libaprutil1-dev,python-paramiko,liblog4cxx10-dev
 Description: ROS communications-related packages, including core client libraries (roscpp, rospy, roslisp) and graph introspection tools (rostopic, rosnode, rosservice, rosparam).
 
