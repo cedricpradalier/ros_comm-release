@@ -1,6 +1,6 @@
 <stack>
   <name>ros_comm</name>
-  <version>1.8.10</version> <!-- also update version in clients/cpp/roscpp/include/ros/common.h -->
+  <version>1.8.11</version> <!-- also update version in clients/cpp/roscpp/include/ros/common.h -->
   <description brief="ROS communications-related libraries and tools">
     ROS communications-related packages, including core client libraries (roscpp, rospy, roslisp) and graph introspection tools (rostopic, rosnode, rosservice, rosparam).
   </description>
@@ -21,6 +21,7 @@
   <build_depends>boost</build_depends>
   <build_depends>catkin</build_depends>
   <build_depends>genmsg</build_depends>
+  <build_depends>langs</build_depends> <!-- rosgraph_msgs, std_srvs -->
   <build_depends>log4cxx</build_depends>
   <build_depends>python-paramiko</build_depends>
   <build_depends>python-yaml</build_depends>
