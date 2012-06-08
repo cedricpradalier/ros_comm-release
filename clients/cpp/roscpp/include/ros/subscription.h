@@ -94,6 +94,9 @@ public:
   bool isDropped() { return dropped_; }
   XmlRpc::XmlRpcValue getStats();
   void getInfo(XmlRpc::XmlRpcValue& info);
+  const TransportHints & getTransportHints() const {
+      return transport_hints_;
+  }
 
   bool addCallback(const SubscriptionCallbackHelperPtr& helper, const std::string& md5sum, CallbackQueueInterface* queue, int32_t queue_size, const VoidConstPtr& tracked_object, bool allow_concurrent_callbacks);
   void removeCallback(const SubscriptionCallbackHelperPtr& helper);
@@ -123,9 +126,9 @@ public:
   class ROSCPP_DECL PendingConnection : public ASyncXMLRPCConnection
   {
     public:
-      PendingConnection(XmlRpc::XmlRpcClient* client, TransportUDPPtr udp_transport, const SubscriptionWPtr& parent, const std::string& remote_uri)
+      PendingConnection(XmlRpc::XmlRpcClient* client, std::vector<TransportPluginInstancePtr> transport, const SubscriptionWPtr& parent, const std::string& remote_uri)
       : client_(client)
-      , udp_transport_(udp_transport)
+      , transport_plugin_(transport)
       , parent_(parent)
       , remote_uri_(remote_uri)
       {}
@@ -136,7 +139,8 @@ public:
       }
 
       XmlRpc::XmlRpcClient* getClient() const { return client_; }
-      TransportUDPPtr getUDPTransport() const { return udp_transport_; }
+      std::vector<TransportPluginInstancePtr> getTransportPlugin() const { return transport_plugin_; }
+      TransportPluginInstancePtr getTransportPlugin(const std::string &protocol_name) const ;
 
       virtual void addToDispatch(XmlRpc::XmlRpcDispatch* disp)
       {
@@ -168,9 +172,11 @@ public:
 
       const std::string& getRemoteURI() { return remote_uri_; }
 
+      void shutdown() ;
+
     private:
       XmlRpc::XmlRpcClient* client_;
-      TransportUDPPtr udp_transport_;
+      std::vector<TransportPluginInstancePtr> transport_plugin_;
       SubscriptionWPtr parent_;
       std::string remote_uri_;
   };

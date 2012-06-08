@@ -49,10 +49,11 @@ namespace ros
 {
 
 PublisherLink::PublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
-			     const TransportHints& transport_hints)
+        const TransportDescription& transport_hints, const TransportFilters& transport_filters)
 : parent_(parent)
 , publisher_xmlrpc_uri_(xmlrpc_uri)
 , transport_hints_(transport_hints)
+, transport_filters_(transport_filters)
 , latched_(false)
 { }
 
@@ -63,7 +64,7 @@ bool PublisherLink::setHeader(const Header& header)
 {
   header.getValue("callerid", caller_id_);
 
-  std::string md5sum, type, latched_str;
+  std::string md5sum, type, latched_str, filters;
   if (!header.getValue("md5sum", md5sum))
   {
     ROS_ERROR("Publisher header did not have required element: md5sum");
@@ -89,6 +90,12 @@ bool PublisherLink::setHeader(const Header& header)
 
   connection_id_ = ConnectionManager::instance()->getNewConnectionID();
   header_ = header;
+
+  if (header.getValue("filters", filters)) {
+      transport_filters_.createFiltersFromString(filters);
+  } else {
+      transport_filters_.clear();
+  }
 
   if (SubscriptionPtr parent = parent_.lock())
   {

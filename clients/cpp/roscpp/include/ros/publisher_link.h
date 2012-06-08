@@ -65,7 +65,8 @@ public:
   };
 
 
-  PublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, const TransportHints& transport_hints);
+            PublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
+                    const TransportDescription& transport_hints, const TransportFilters & transport_filters);
   virtual ~PublisherLink();
 
   const Stats &getStats() { return stats_; }
@@ -92,7 +93,8 @@ protected:
 
   Stats stats_;
 
-  TransportHints transport_hints_;
+            TransportDescription transport_hints_;
+            TransportFilters transport_filters_;
 
   bool latched_;
   std::string caller_id_;

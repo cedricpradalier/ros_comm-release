@@ -32,6 +32,7 @@
 #include "common.h"
 #include "ros/serialization.h"
 #include "rosout_appender.h"
+#include "ros/transport_hints.h"
 
 #include "XmlRpcValue.h"
 
@@ -60,7 +61,7 @@ typedef boost::shared_ptr<ConnectionManager> ConnectionManagerPtr;
 class SubscriptionCallbackHelper;
 typedef boost::shared_ptr<SubscriptionCallbackHelper> SubscriptionCallbackHelperPtr;
 
-class ROSCPP_DECL TopicManager
+class ROSCPP_DECL TopicManager : public boost::enable_shared_from_this<TopicManager>
 {
 public:
   static const TopicManagerPtr& instance();
@@ -117,6 +118,16 @@ public:
    * \return the number of subscribers
    */
   size_t getNumPublishers(const std::string &_topic);
+
+  /**
+   * \brief Return the transport hints used by the subscriber on a particular
+   * topic
+   *
+   * \param _topic the topic name to check
+   * \param _hints will be filled with the retrieved transport hints
+   * \return true on success
+   */
+  bool retrieveTranportHints(const std::string &topic, TransportHints & hints);
 
   template<typename M>
   void publish(const std::string& topic, const M& message)

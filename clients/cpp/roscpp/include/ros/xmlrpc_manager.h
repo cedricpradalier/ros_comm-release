@@ -127,7 +127,7 @@ public:
   bool bind(const std::string& function_name, const XMLRPCFunc& cb);
   void unbind(const std::string& function_name);
 
-  void start();
+            void start(unsigned int port = 0);
   void shutdown();
 
   bool isShuttingDown() { return shutting_down_; }

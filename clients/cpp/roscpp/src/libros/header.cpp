@@ -71,6 +71,7 @@ bool Header::parse(const boost::shared_array<uint8_t>& buffer, uint32_t size, st
 bool Header::parse(uint8_t* buffer, uint32_t size, std::string& error_msg)
 {
   uint8_t* buf = buffer;
+  // printf("Header parse\n");
   while (buf < buffer + size)
   {
     uint32_t len;
@@ -78,7 +79,7 @@ bool Header::parse(uint8_t* buffer, uint32_t size, std::string& error_msg)
 
     if (len > 1000000)
     {
-      error_msg = "Received an invalid TCPROS header.  Each element must be prepended by a 4-byte length.";
+      error_msg = "Received an invalid header.  Each element must be prepended by a 4-byte length.";
       ROS_ERROR("%s", error_msg.c_str());
 
       return false;
@@ -147,6 +148,7 @@ void Header::write(const M_string& key_vals, boost::shared_array<uint8_t>& buffe
   char* ptr = (char*)buffer.get();
 
   // Write the data
+  // printf("Header write\n");
   {
     M_string::const_iterator it = key_vals.begin();
     M_string::const_iterator end = key_vals.end();
@@ -161,6 +163,7 @@ void Header::write(const M_string& key_vals, boost::shared_array<uint8_t>& buffe
       static const char equals = '=';
       SROS_SERIALIZE_PRIMITIVE(ptr, equals);
       SROS_SERIALIZE_BUFFER(ptr, value.data(), value.length());
+      // printf(":%s=%s:\n",key.c_str(),value.c_str());
     }
   }
 

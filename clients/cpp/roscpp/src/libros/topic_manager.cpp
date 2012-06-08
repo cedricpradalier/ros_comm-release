@@ -40,6 +40,7 @@
 #include "ros/init.h"
 #include "ros/file_log.h"
 #include "ros/subscribe_options.h"
+#include "ros/transport_plugin_manager.h"
 
 #include "XmlRpc.h"
 
@@ -612,6 +613,23 @@ bool TopicManager::requestTopic(const string &topic,
     }
 
     string proto_name = proto[0];
+    const TransportPluginManagerPtr & tpm = TransportPluginManager::instance();
+    TransportPluginPtr tp_it = tpm->findByProtocol(proto_name);
+    if (tp_it) {
+    	ROSCPP_LOG_DEBUG( "requestTopic accepting protocol %s for topic %s",
+                tp_it->getProtocolName().c_str(), topic.c_str());
+        TransportPluginInstancePtr instance = tp_it->newInstance();
+        if (instance->processTopicRequest(topic, proto, ret)) {
+            return true;
+        } else {
+            ROS_ERROR("Rejecting protocol %s for topic %s", proto_name.c_str(),topic.c_str());
+        }
+    } else {
+        ROSCPP_LOG_DEBUG( "an unsupported protocol was offered: [%s]",
+                proto_name.c_str());
+        return false;
+    }
+#if 0
     if (proto_name == string("TCPROS"))
     {
       XmlRpcValue tcpros_params;
@@ -694,11 +712,10 @@ bool TopicManager::requestTopic(const string &topic,
       ROSCPP_LOG_DEBUG( "an unsupported protocol was offered: [%s]",
           proto_name.c_str());
     }
+#endif
   }
 
-  ROSCPP_LOG_DEBUG( "Currently, roscpp only supports TCPROS. The caller to " \
-             "requestTopic did not support TCPROS, so there are no " \
-             "protocols in common.");
+  ROSCPP_LOG_DEBUG( "[requestTopic] Could not find a matching protocol.");
   return false;
 }
 
@@ -794,6 +811,40 @@ PublicationPtr TopicManager::lookupPublicationWithoutLock(const string &topic)
   }
 
   return t;
+}
+
+bool TopicManager::retrieveTranportHints(const std::string &topic, TransportHints & hints)
+{
+  SubscriptionPtr sub;
+
+  {
+    boost::mutex::scoped_lock lock(subs_mutex_);
+
+    if (isShuttingDown())
+    {
+      return false;
+    }
+
+    L_Subscription::iterator it;
+    for (it = subscriptions_.begin();
+         it != subscriptions_.end(); ++it)
+    {
+      if ((*it)->getName() == topic)
+      {
+        sub = *it;
+        break;
+      }
+    }
+  }
+
+  if (!sub)
+  {
+    return false;
+  }
+
+  hints = sub->getTransportHints();
+  return false;
+
 }
 
 bool TopicManager::unsubscribe(const std::string &topic, const SubscriptionCallbackHelperPtr& helper)

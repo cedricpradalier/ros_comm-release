@@ -51,6 +51,10 @@ typedef boost::shared_ptr<void const> VoidConstPtr;
 typedef boost::weak_ptr<void const> VoidConstWPtr;
 
 class Header;
+class TransportPlugin;
+typedef boost::shared_ptr<TransportPlugin> TransportPluginPtr;
+class TransportPluginInstance;
+typedef boost::shared_ptr<TransportPluginInstance> TransportPluginInstancePtr;
 class Transport;
 typedef boost::shared_ptr<Transport> TransportPtr;
 class TransportTCP;

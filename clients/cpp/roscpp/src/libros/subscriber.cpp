@@ -104,4 +104,16 @@ namespace ros
     return 0;
   }
 
+  TransportHints Subscriber::getTransportHints() const
+  {
+      TransportHints hints;
+      if (impl_ && impl_->isValid()) {
+          if (TopicManager::instance()->retrieveTranportHints(impl_->topic_, hints)) {
+              return hints;
+          }
+      }
+
+      return hints;
+  }
+
 } // namespace ros

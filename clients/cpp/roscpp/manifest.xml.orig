@@ -18,7 +18,6 @@
   <license>BSD</license>
   <review status="Doc reviewed"/>
   <url>http://ros.org/wiki/roscpp</url>
-  <depend package="pluginlib"/>
   <depend package="roslang"/>
   <export>
     <cpp cflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --cflags roscpp`"

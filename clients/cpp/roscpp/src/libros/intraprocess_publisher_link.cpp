@@ -49,8 +49,9 @@
 namespace ros
 {
 
-IntraProcessPublisherLink::IntraProcessPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, const TransportHints& transport_hints)
-: PublisherLink(parent, xmlrpc_uri, transport_hints)
+IntraProcessPublisherLink::IntraProcessPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
+        const TransportDescription& transport_hints)
+: PublisherLink(parent, xmlrpc_uri, transport_hints, TransportFilters())
 , dropped_(false)
 {
 }

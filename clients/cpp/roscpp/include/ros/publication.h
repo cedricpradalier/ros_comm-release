@@ -91,6 +91,11 @@ public:
    * \brief Returns the number of subscribers this publication has
    */
   uint32_t getNumSubscribers();
+  /**
+   * \brief Returns whether or not this publication has any subscriber for this
+   * transport and this filter set
+   */
+  bool hasSubscriber(const std::string & transport, const std::string & filters); 
 
   void getPublishTypes(bool& serialize, bool& nocopy, const std::type_info& ti);
 

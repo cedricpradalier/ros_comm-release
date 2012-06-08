@@ -35,6 +35,7 @@
 #include "ros/connection_manager.h"
 #include "ros/topic_manager.h"
 #include "ros/file_log.h"
+#include "ros/transport_plugin_manager.h"
 
 #include <boost/bind.hpp>
 
@@ -103,6 +104,12 @@ bool TransportSubscriberLink::handleHeader(const Header& header)
   connection_id_ = ConnectionManager::instance()->getNewConnectionID();
   topic_ = pt->getName();
   parent_ = PublicationWPtr(pt);
+  // Warning, this is a work around while transport_hints are not properly
+  // serialized. TODO: implement the serialization
+  std::string filters;
+  if (header.getValue("filters", filters)) {
+      setMessageFilters(filters);
+  }
 
   // Send back a success, with info
   M_string m;
@@ -111,6 +118,7 @@ bool TransportSubscriberLink::handleHeader(const Header& header)
   m["message_definition"] = pt->getMessageDefinition();
   m["callerid"] = this_node::getName();
   m["latching"] = pt->isLatching() ? "1" : "0";
+  m["filters"] = filters;
   connection_->writeHeader(m, boost::bind(&TransportSubscriberLink::onHeaderWritten, this, _1));
 
   pt->addSubscriberLink(shared_from_this());
@@ -176,6 +184,10 @@ void TransportSubscriberLink::enqueueMessage(const SerializedMessage& m, bool se
   {
     return;
   }
+  SerializedMessage filtered;
+  if (!applyFilters(m, filtered))  {
+      return;
+  }
 
   {
     boost::mutex::scoped_lock lock(outbox_mutex_);
@@ -205,14 +217,14 @@ void TransportSubscriberLink::enqueueMessage(const SerializedMessage& m, bool se
       queue_full_ = false;
     }
 
-    outbox_.push(m);
+    outbox_.push(filtered);
   }
 
   startMessageWrite(false);
 
   stats_.messages_sent_++;
-  stats_.bytes_sent_ += m.num_bytes;
-  stats_.message_data_sent_ += m.num_bytes;
+  stats_.bytes_sent_ += filtered.num_bytes;
+  stats_.message_data_sent_ += filtered.num_bytes;
 }
 
 std::string TransportSubscriberLink::getTransportType()

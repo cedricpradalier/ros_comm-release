@@ -27,6 +27,8 @@
 
 #include "ros/subscriber_link.h"
 #include "ros/publication.h"
+#include "ros/transport_hints.h"
+#include "ros/transport_plugin_manager.h"
 
 #include <boost/bind.hpp>
 
@@ -81,6 +83,12 @@ const std::string& SubscriberLink::getMessageDefinition()
 {
   PublicationPtr parent = parent_.lock();
   return parent->getMessageDefinition();
+}
+
+bool SubscriberLink::applyFilters(const SerializedMessage & src, SerializedMessage & dest)
+{
+  // if (!filters_.empty()) printf("Applying filters '%s'",filters_.c_str());
+  return TransportPluginManager::applyFilters(transport_filters_, src, dest);
 }
 
 } // namespace ros

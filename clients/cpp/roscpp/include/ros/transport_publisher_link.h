@@ -29,8 +29,9 @@
 #define ROSCPP_TRANSPORT_PUBLISHER_LINK_H
 
 #include "common.h"
-#include "publisher_link.h"
-#include "connection.h"
+#include "ros/transport_hints.h"
+#include "ros/publisher_link.h"
+#include "ros/connection.h"
 
 namespace ros
 {
@@ -51,7 +52,8 @@ class WallTimerEvent;
 class ROSCPP_DECL TransportPublisherLink : public PublisherLink
 {
 public:
-  TransportPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, const TransportHints& transport_hints);
+  TransportPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
+          const TransportDescription & transport_description, const TransportFilters & transport_filters);
   virtual ~TransportPublisherLink();
 
   //

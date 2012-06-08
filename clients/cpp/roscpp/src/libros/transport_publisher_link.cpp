@@ -47,6 +47,7 @@
 #include "ros/timer_manager.h"
 #include "ros/callback_queue.h"
 #include "ros/internal_timer_manager.h"
+#include "ros/transport_plugin_manager.h"
 
 #include <boost/bind.hpp>
 
@@ -55,8 +56,9 @@
 namespace ros
 {
 
-TransportPublisherLink::TransportPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, const TransportHints& transport_hints)
-: PublisherLink(parent, xmlrpc_uri, transport_hints)
+TransportPublisherLink::TransportPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
+        const TransportDescription & transport_hints, const TransportFilters & transport_filters)
+: PublisherLink(parent, xmlrpc_uri, transport_hints, transport_filters)
 , retry_timer_handle_(-1)
 , needs_retry_(false)
 , dropping_(false)
@@ -91,7 +93,12 @@ bool TransportPublisherLink::initialize(const ConnectionPtr& connection)
     header["md5sum"] = parent->md5sum();
     header["callerid"] = this_node::getName();
     header["type"] = parent->datatype();
-    header["tcp_nodelay"] = transport_hints_.getTCPNoDelay() ? "1" : "0";
+    TCPTransportDescription tcp(transport_hints_);
+    // warning the two function below are to transitional. This should only use
+    // the TransportDescription in a second stage, and some ability for these
+    // to serialize themselves
+    header["tcp_nodelay"] = tcp.getNoDelay() ? "1" : "0";
+    header["filters"] = transport_filters_.getFilterString();
     connection_->writeHeader(header, boost::bind(&TransportPublisherLink::onHeaderWritten, this, _1));
   }
   else
@@ -282,14 +289,18 @@ void TransportPublisherLink::onConnectionDropped(const ConnectionPtr& conn, Conn
 
 void TransportPublisherLink::handleMessage(const SerializedMessage& m, bool ser, bool nocopy)
 {
-  stats_.bytes_received_ += m.num_bytes;
+    SerializedMessage filtered;
+    if (TransportPluginManager::unapplyFilters(transport_filters_, m, filtered)) {
+
+        stats_.bytes_received_ += filtered.num_bytes;
   stats_.messages_received_++;
 
   SubscriptionPtr parent = parent_.lock();
 
   if (parent)
   {
-    stats_.drops_ += parent->handleMessage(m, ser, nocopy, getConnection()->getHeader().getValues(), shared_from_this());
+            stats_.drops_ += parent->handleMessage(filtered, ser, nocopy, getConnection()->getHeader().getValues(), shared_from_this());
+        }
   }
 }
 

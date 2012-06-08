@@ -1,9 +1,12 @@
+# cmake_minimum_required(VERSION 2.4.6)
+
 project(roscpp)
 
 find_package(ROS COMPONENTS
   catkin genmsg
   cpp_common rostime rosconsole roscpp_serialization
   roscpp_traits std_msgs rosgraph_msgs xmlrpcpp rosunit
+  pluginlib
   )
 include_directories(${ROS_INCLUDE_DIRS})
 
@@ -52,8 +55,6 @@ add_library(roscpp
   src/libros/node_handle.cpp
   src/libros/connection_manager.cpp
   src/libros/file_log.cpp
-  src/libros/transport/transport_udp.cpp
-  src/libros/transport/transport_tcp.cpp
   src/libros/subscriber_link.cpp
   src/libros/service_client_link.cpp
   src/libros/transport_publisher_link.cpp
@@ -70,6 +71,14 @@ add_library(roscpp
   src/libros/poll_set.cpp
   src/libros/service.cpp
   src/libros/this_node.cpp
+  src/libros/transport_plugin_manager.cpp
+  src/libros/transport_description.cpp
+  src/libros/transport_hints.cpp
+  src/libros/transport_plugin.cpp
+  src/libros/transport/transport_tcp.cpp
+  src/libros/transport/tcp_transport_plugin.cpp
+  src/libros/transport/transport_udp.cpp
+  src/libros/transport/udp_transport_plugin.cpp
   )
 
 add_dependencies(roscpp roscpp_gencpp rosgraph_msgs_gencpp)

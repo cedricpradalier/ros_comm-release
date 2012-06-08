@@ -49,7 +49,8 @@ typedef boost::shared_ptr<IntraProcessSubscriberLink> IntraProcessSubscriberLink
 class ROSCPP_DECL IntraProcessPublisherLink : public PublisherLink
 {
 public:
-  IntraProcessPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, const TransportHints& transport_hints);
+  IntraProcessPublisherLink(const SubscriptionPtr& parent, const std::string& xmlrpc_uri, 
+          const TransportDescription& transport_hints);
   virtual ~IntraProcessPublisherLink();
 
   void setPublisher(const IntraProcessSubscriberLinkPtr& publisher);

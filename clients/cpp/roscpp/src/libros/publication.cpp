@@ -32,6 +32,7 @@
 #include "ros/single_subscriber_publisher.h"
 #include "ros/serialization.h"
 #include <std_msgs/Header.h>
+#include <boost/algorithm/string.hpp>
 
 namespace ros
 {
@@ -300,8 +301,25 @@ void Publication::getInfo(XmlRpc::XmlRpcValue& info)
     curr_info[2] = "o";
     curr_info[3] = (*c)->getTransportType();
     curr_info[4] = name_;
+    // could be useful, but not yet in the official protocol
+    // curr_info[5] = (*c)->getFilterString();
     info[info.size()] = curr_info;
   }
+}
+
+bool Publication::hasSubscriber(const std::string & transport, const std::string & filters) 
+{
+  boost::mutex::scoped_lock lock(subscriber_links_mutex_);
+
+  for (V_SubscriberLink::iterator c = subscriber_links_.begin();
+       c != subscriber_links_.end(); ++c)
+  {
+      if (boost::algorithm::iequals((*c)->getTransportType(),transport) 
+              && ((*c)->getFilterString() == filters)) {
+          return true;
+      }
+  }
+  return false;
 }
 
 void Publication::dropAllConnections()

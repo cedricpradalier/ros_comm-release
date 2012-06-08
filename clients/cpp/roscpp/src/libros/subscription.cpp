@@ -57,6 +57,7 @@
 #include "ros/subscription_queue.h"
 #include "ros/file_log.h"
 #include "ros/transport_hints.h"
+#include "ros/transport_plugin_manager.h"
 #include "ros/subscription_callback_helper.h"
 
 #include <boost/make_shared.hpp>
@@ -65,6 +66,21 @@ using XmlRpc::XmlRpcValue;
 
 namespace ros
 {
+
+    void Subscription::PendingConnection::shutdown() {
+        for (unsigned int i=0;i<transport_plugin_.size();i++) {
+            transport_plugin_[i]->shutdown();
+        }
+    }
+
+    TransportPluginInstancePtr Subscription::PendingConnection::getTransportPlugin(const std::string &protocol_name) const {
+        for (unsigned int i=0;i<transport_plugin_.size();i++) {
+            if (transport_plugin_[i]->getProtocolName() == protocol_name) {
+                return transport_plugin_[i];
+            }
+        }
+        return TransportPluginInstancePtr();
+    }
 
 Subscription::Subscription(const std::string &name, const std::string& md5sum, const std::string& datatype, const TransportHints& transport_hints)
 : name_(name)
@@ -186,7 +202,8 @@ void Subscription::addLocalConnection(const PublicationPtr& pub)
 
   ROSCPP_LOG_DEBUG("Creating intraprocess link for topic [%s]", name_.c_str());
 
-  IntraProcessPublisherLinkPtr pub_link(new IntraProcessPublisherLink(shared_from_this(), XMLRPCManager::instance()->getServerURI(), transport_hints_));
+  IntraProcessPublisherLinkPtr pub_link(new IntraProcessPublisherLink(shared_from_this(), XMLRPCManager::instance()->getServerURI(), 
+              IntraTransportDescription()));
   IntraProcessSubscriberLinkPtr sub_link(new IntraProcessSubscriberLink(pub));
   pub_link->setPublisher(sub_link);
   sub_link->setSubscriber(pub_link);
@@ -341,14 +358,30 @@ bool Subscription::negotiateConnection(const std::string& xmlrpc_uri)
 {
   XmlRpcValue tcpros_array, protos_array, params;
   XmlRpcValue udpros_array;
-  TransportUDPPtr udp_transport;
+    TransportPluginInstancePtr transport_plugin_instance;
+    std::vector<TransportPluginInstancePtr> tpi_V;
   int protos = 0;
-  V_string transports = transport_hints_.getTransports();
+    std::vector<TransportDescription> transports = transport_hints_.getTransportDescriptions();
   if (transports.empty())
   {
     transport_hints_.reliable();
-    transports = transport_hints_.getTransports();
+        transports = transport_hints_.getTransportDescriptions();
   }
+    const TransportPluginManagerPtr & tpm = TransportPluginManager::instance();
+    std::vector<TransportDescription>::const_iterator it;
+    for (it = transports.begin(); it != transports.end(); ++it)
+    {
+        TransportPluginPtr tp_it = tpm->findByName(it->getName());
+        if (tp_it) {
+            transport_plugin_instance = tp_it->newInstance();
+            protos_array[protos++] = transport_plugin_instance->prepareConnectionNegotiation(shared_from_this(), *it, transport_hints_.getFilters());
+            tpi_V.push_back(transport_plugin_instance);
+            ROSCPP_LOG_DEBUG("Subscription: added transport %s",transport_plugin_instance->getName().c_str());
+        } else {
+            ROS_WARN("Unsupported transport type hinted: %s, skipping", it->getName().c_str());
+        }
+    }
+#if 0
   for (V_string::const_iterator it = transports.begin();
        it != transports.end();
        ++it)
@@ -387,6 +420,7 @@ bool Subscription::negotiateConnection(const std::string& xmlrpc_uri)
       ROS_WARN("Unsupported transport type hinted: %s, skipping", it->c_str());
     }
   }
+#endif
   params[0] = this_node::getName();
   params[1] = name_;
   params[2] = protos_array;
@@ -408,11 +442,7 @@ bool Subscription::negotiateConnection(const std::string& xmlrpc_uri)
     ROSCPP_LOG_DEBUG("Failed to contact publisher [%s:%d] for topic [%s]",
               peer_host.c_str(), peer_port, name_.c_str());
     delete c;
-    if (udp_transport)
-    {
-      udp_transport->close();
-    }
-
+        transport_plugin_instance->shutdown();
     return false;
   }
 
@@ -420,7 +450,7 @@ bool Subscription::negotiateConnection(const std::string& xmlrpc_uri)
 
   // The PendingConnectionPtr takes ownership of c, and will delete it on
   // destruction.
-  PendingConnectionPtr conn(new PendingConnection(c, udp_transport, shared_from_this(), xmlrpc_uri));
+    PendingConnectionPtr conn(new PendingConnection(c, tpi_V, shared_from_this(), xmlrpc_uri));
 
   XMLRPCManager::instance()->addASyncConnection(conn);
   // Put this connection on the list that we'll look at later.
@@ -430,14 +460,6 @@ bool Subscription::negotiateConnection(const std::string& xmlrpc_uri)
   }
 
   return true;
-}
-
-void closeTransport(const TransportUDPPtr& trans)
-{
-  if (trans)
-  {
-    trans->close();
-  }
 }
 
 void Subscription::pendingConnectionDone(const PendingConnectionPtr& conn, XmlRpcValue& result)
@@ -453,45 +475,64 @@ void Subscription::pendingConnectionDone(const PendingConnectionPtr& conn, XmlRp
     pending_connections_.erase(conn);
   }
 
-  TransportUDPPtr udp_transport;
-
   std::string peer_host = conn->getClient()->getHost();
   uint32_t peer_port = conn->getClient()->getPort();
   std::stringstream ss;
   ss << "http://" << peer_host << ":" << peer_port << "/";
   std::string xmlrpc_uri = ss.str();
-  udp_transport = conn->getUDPTransport();
 
   XmlRpc::XmlRpcValue proto;
   if(!XMLRPCManager::instance()->validateXmlrpcResponse("requestTopic", result, proto))
   {
   	ROSCPP_LOG_DEBUG("Failed to contact publisher [%s:%d] for topic [%s]",
               peer_host.c_str(), peer_port, name_.c_str());
-  	closeTransport(udp_transport);
+    conn->shutdown();
   	return;
   }
 
   if (proto.size() == 0)
   {
   	ROSCPP_LOG_DEBUG("Couldn't agree on any common protocols with [%s] for topic [%s]", xmlrpc_uri.c_str(), name_.c_str());
-  	closeTransport(udp_transport);
+    conn->shutdown();
   	return;
   }
 
   if (proto.getType() != XmlRpcValue::TypeArray)
   {
   	ROSCPP_LOG_DEBUG("Available protocol info returned from %s is not a list.", xmlrpc_uri.c_str());
-  	closeTransport(udp_transport);
+    conn->shutdown();
   	return;
   }
   if (proto[0].getType() != XmlRpcValue::TypeString)
   {
   	ROSCPP_LOG_DEBUG("Available protocol info list doesn't have a string as its first element.");
-  	closeTransport(udp_transport);
+    conn->shutdown();
   	return;
   }
 
+  TransportPluginInstancePtr active_transport;
   std::string proto_name = proto[0];
+  active_transport = conn->getTransportPlugin(proto_name);
+  if (active_transport) {
+      ROSCPP_LOG_DEBUG("Subscription: publisher accepted our transport: %s ",proto_name.c_str());
+  } else {
+      ROSCPP_LOG_DEBUG("Publisher transport does not match ours.");
+      conn->shutdown();
+      return;
+  }
+
+  PublisherLinkPtr pub_link = 
+      active_transport->createPublisherLink(name_,shared_from_this(), proto);
+  if (pub_link) {
+      boost::mutex::scoped_lock pub_lock(publisher_links_mutex_);
+      transport_hints_.only(active_transport->getDescription());
+      transport_hints_.setFilters(active_transport->getFilters());
+      addPublisherLink(pub_link);
+      ROSCPP_LOG_DEBUG("Connected to publisher of topic [%s] on protocol [%s]", name_.c_str(), proto_name.c_str());
+  }
+  return;
+
+#if 0
   if (proto_name == "TCPROS")
   {
     if (proto.size() != 3 ||
@@ -592,6 +633,7 @@ void Subscription::pendingConnectionDone(const PendingConnectionPtr& conn, XmlRp
   {
   	ROSCPP_LOG_DEBUG("Publisher offered unsupported transport [%s]", proto_name.c_str());
   }
+#endif
 }
 
 uint32_t Subscription::handleMessage(const SerializedMessage& m, bool ser, bool nocopy, const boost::shared_ptr<M_string>& connection_header, const PublisherLinkPtr& link)

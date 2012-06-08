@@ -37,6 +37,7 @@
 #include "ros/builtin_message_traits.h"
 #include "ros/serialization.h"
 #include "ros/message_event.h"
+#include "ros/file_log.h"
 #include <ros/static_assert.h>
 
 #include <boost/type_traits/add_const.hpp>
@@ -191,6 +192,8 @@ public:
   }
 
 private:
+
+  
   Callback callback_;
   CreateFunction create_;
 };

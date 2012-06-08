@@ -30,11 +30,54 @@
 
 #include "common.h"
 #include "ros/forwards.h"
+#include "ros/transport_description.h"
 
 #include <boost/lexical_cast.hpp>
 
 namespace ros
 {
+    class ROSCPP_DECL TransportFilters
+    {
+        public:
+            /**
+             * \brief Get the list of filter names
+             */
+            V_string getFilterNames() const ;
+
+            /**
+             * \brief Get the list of filters
+             */
+            const std::vector<FilterDescription> & getFilterDescriptions() const {
+                return filters_;
+            }
+
+            /**
+             * \brief Get the string representation of the filter pipeline
+             */
+            std::string getFilterString() const ;
+
+            /**
+             * \brief Create the filter pipeline from its string description
+             */
+            bool createFiltersFromString(const std::string & filters);
+
+            /**
+             * \brief Add a filter to the stack
+             * */
+            void push_back(const FilterDescription & f) {
+                filters_.push_back(f);
+            }
+
+            /**
+             * \brief Remove all filters from the list
+             * */
+            void clear() {
+                filters_.clear();
+            }
+
+        protected:
+            std::vector<FilterDescription> filters_;
+    };
 
 /**
  * \brief Provides a way of specifying network transport hints to ros::NodeHandle::subscribe() and
@@ -69,7 +112,7 @@ public:
    */
   TransportHints& tcp()
   {
-    transports_.push_back("TCP");
+                transports_.push_back(TCPTransportDescription());
     return *this;
   }
 
@@ -81,28 +124,26 @@ public:
    */
   TransportHints& tcpNoDelay(bool nodelay = true)
   {
-    options_["tcp_nodelay"] = nodelay ? "true" : "false";
+                for (unsigned int i=0;i<transports_.size();i++) {
+                    if (transports_[i].getName() == "TCP") {
+                        TCPTransportDescription tcp(transports_[i]);
+                        tcp.setNoDelay(nodelay);
+                    }
+                }
     return *this;
   }
 
   /**
    * \brief Returns whether or not this TransportHints has specified TCP_NODELAY
    */
-  bool getTCPNoDelay()
-  {
-    M_string::iterator it = options_.find("tcp_nodelay");
-    if (it == options_.end())
+            bool getTCPNoDelay() const
     {
-      return false;
+                for (unsigned int i=0;i<transports_.size();i++) {
+                    if (transports_[i].getName() == "TCP") {
+                        TCPTransportDescription tcp(transports_[i]);
+                        return tcp.getNoDelay();
     }
-
-    const std::string& val = it->second;
-    if (val == "true")
-    {
-      return true;
     }
-
-    return false;
   }
 
   /**
@@ -112,7 +153,12 @@ public:
    */
   TransportHints& maxDatagramSize(int size)
   {
-    options_["max_datagram_size"] = boost::lexical_cast<std::string>(size);
+                for (unsigned int i=0;i<transports_.size();i++) {
+                    if (transports_[i].getName() == "UDP") {
+                        UDPTransportDescription udp(transports_[i]);
+                        udp.setMaxDatagramSize(size);
+                    }
+                }
     return *this;
   }
 
@@ -120,15 +166,15 @@ public:
    * \brief Returns the maximum datagram size specified on this TransportHints, or 0 if
    * no size was specified.
    */
-  int getMaxDatagramSize()
+            int getMaxDatagramSize() const
   {
-    M_string::iterator it = options_.find("max_datagram_size");
-    if (it == options_.end())
-    {
-      return 0;
+                for (unsigned int i=0;i<transports_.size();i++) {
+                    if (transports_[i].getName() == "UDP") {
+                        UDPTransportDescription udp(transports_[i]);
+                        return udp.getMaxDatagramSize();
     }
-
-    return boost::lexical_cast<int>(it->second);
+                }
+                return 0;
   }
 
   /**
@@ -146,22 +192,86 @@ public:
    */
   TransportHints& udp()
   {
-    transports_.push_back("UDP");
+                transports_.push_back(UDPTransportDescription());
     return *this;
   }
 
   /**
    * \brief Returns a vector of transports, ordered by preference
    */
-  const V_string& getTransports() { return transports_; }
+            V_string getTransports() const ;
+
+            /**
+             * \brief Returns a vector of transport names, ordered by preference
+             */
+            const std::vector<TransportDescription>& getTransportDescriptions() const { return transports_; }
+
   /**
    * \brief Returns the map of options created by other methods inside TransportHints
-   */
-  const M_string& getOptions() { return options_; }
+             * Kept for backward compatibility
+             */
+            M_string getOptions() const ;
 
-private:
-  V_string transports_;
-  M_string options_;
+            /**
+             * \brief Raw tool to store data for plugins
+             *
+             */
+            TransportHints& plugin(const std::string & name);
+
+            /**
+             * \brief Raw tool to add a transport description
+             *
+             */
+            TransportHints& transport(TransportDescription & transport) {
+                transports_.push_back(transport);
+                return *this;
+            }
+
+            /**
+             * \brief Raw tool to add the filter description
+             *
+             */
+            TransportHints& filter(const FilterDescription & filter) {
+                filters_.push_back(filter);
+                return *this;
+            }
+
+            /**
+             * \brief Build a filter pipeline from a string description
+             * Typically "filter1|filter2|filter3"
+             * Or even: "filter1|filter2:param1=value:param2=value|filter3"
+             *
+   */
+            TransportHints& filters(const std::string & description) {
+                filters_.createFiltersFromString(description);
+                return *this;
+            }
+
+
+            const TransportFilters & getFilters() const {
+                return filters_;
+            }
+
+            void setFilters(const TransportFilters & filters) {
+                filters_ = filters;
+            }
+
+            /**
+             * \brief Remove all transports from the list
+             * */
+            void clear() {
+                transports_.clear();
+            }
+
+            void only(const TransportDescription & transport) {
+                transports_.clear();
+                transports_.push_back(transport);
+            }
+
+
+        protected:
+            std::vector<TransportDescription> transports_;
+            TransportFilters filters_;
 };
 
 }

@@ -29,6 +29,7 @@
 #define ROSCPP_SUBSCRIBER_LINK_H
 
 #include "ros/common.h"
+#include "ros/transport_hints.h"
 
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_array.hpp>
@@ -82,14 +83,28 @@ public:
   const std::string& getDataType();
   const std::string& getMessageDefinition();
 
+  void setMessageFilters(const std::string & filters) {
+      // Warning, this is to help transition to more complex transport_hints
+      // but this only use the default version of each filter, without
+      // parameters
+      transport_filters_.createFiltersFromString(filters);
+  }
+
+  std::string getFilterString() const {
+      return transport_filters_.getFilterString();
+  }
+
 protected:
   bool verifyDatatype(const std::string &datatype);
+  bool applyFilters(const SerializedMessage & src, SerializedMessage & dest);
 
   PublicationWPtr parent_;
   unsigned int connection_id_;
   std::string destination_caller_id_;
   Stats stats_;
   std::string topic_;
+  ros::TransportDescriptionPtr transport_hints_;
+  ros::TransportFilters transport_filters_;
 };
 
 } // namespace ros

@@ -46,6 +46,7 @@
 #include "ros/param.h"
 #include "ros/rosout_appender.h"
 #include "ros/subscribe_options.h"
+#include "ros/transport_plugin_manager.h"
 #include "ros/transport/transport_tcp.h"
 #include "ros/internal_timer_manager.h"
 
@@ -474,6 +475,8 @@ void init(int& argc, char** argv, const std::string& name, uint32_t options)
   }
 
   init(remappings, name, options);
+
+  TransportPluginManager::instance()->loadDynamicPlugins();
 }
 
 void init(const VP_string& remappings, const std::string& name, uint32_t options)
@@ -574,6 +577,7 @@ void shutdown()
     XMLRPCManager::instance()->shutdown();
   }
 
+  TransportPluginManager::instance()->shutdown();
   WallTime end = WallTime::now();
 
   g_started = false;
