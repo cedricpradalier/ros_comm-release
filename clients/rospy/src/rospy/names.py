@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: names.py 15557 2011-12-31 00:27:05Z kwc $
+# Revision $Id: names.py 16814 2012-07-03 03:50:15Z dthomas $
 
 """
 Support for ROS Names
@@ -179,6 +179,7 @@ def resolve_name(name, caller_id=None):
     if not name: #empty string resolves to namespace
         return namespace(caller_id)
 
+    name = str(name)  # enforce string conversion else struct.pack might raise UnicodeDecodeError (see #3998)
     name = canonicalize_name(name)
     if name[0] == SEP: #global name
         resolved_name = name
