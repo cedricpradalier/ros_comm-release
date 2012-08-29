@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: node_args.py 15906 2012-01-11 02:04:56Z kwc $
+# Revision $Id$
 
 """
 Utility module of roslaunch that computes the command-line arguments

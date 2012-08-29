@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: transport.py 16619 2012-04-06 00:28:27Z kwc $
+# Revision $Id$
 """
 Base classes for rospy transports
 

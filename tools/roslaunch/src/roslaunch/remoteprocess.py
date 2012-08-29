@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: remoteprocess.py 16825 2012-07-05 17:33:30Z dthomas $
+# Revision $Id$
 
 """
 Process handler for launching ssh-based roslaunch child processes.

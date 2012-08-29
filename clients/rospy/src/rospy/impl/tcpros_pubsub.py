@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: tcpros_pubsub.py 16839 2012-07-13 22:59:25Z dthomas $
+# Revision $Id$
 
 """Internal use: Topic-specific extensions for TCPROS support"""
 

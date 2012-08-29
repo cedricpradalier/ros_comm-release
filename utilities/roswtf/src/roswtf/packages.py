@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: packages.py 15527 2011-12-30 21:58:31Z kwc $
+# Revision $Id$
 
 import os
 import time

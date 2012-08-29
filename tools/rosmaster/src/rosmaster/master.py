@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: master.py 15649 2012-01-04 03:52:39Z kwc $
+# Revision $Id$
 
 """
 ROS Master. 

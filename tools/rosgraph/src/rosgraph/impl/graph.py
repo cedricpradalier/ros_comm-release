@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: graph.py 16696 2012-05-08 22:35:44Z dthomas $
+# Revision $Id$
 
 from __future__ import print_function
 

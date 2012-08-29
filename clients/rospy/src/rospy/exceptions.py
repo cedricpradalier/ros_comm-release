@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: exceptions.py 7956 2010-01-20 01:46:50Z kwc $
+# Revision $Id$
 
 """rospy exception types"""
 

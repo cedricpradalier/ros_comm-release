@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: environment.py 15798 2012-01-06 00:42:48Z kwc $
+# Revision $Id$
 
 """
 Rules for checking ROS environment state.

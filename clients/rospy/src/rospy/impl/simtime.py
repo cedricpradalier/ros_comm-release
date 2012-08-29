@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: simtime.py 16511 2012-03-09 19:56:16Z kwc $
+# Revision $Id$
 
 """Internal-use: Support for simulated clock."""
 

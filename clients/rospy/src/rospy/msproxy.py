@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: msproxy.py 11729 2010-10-23 21:21:54Z kwc $
+# Revision $Id$
 """
 Master/Slave XML-RPC Wrappers.
 

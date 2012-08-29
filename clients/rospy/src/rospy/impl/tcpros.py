@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: tcpros.py 9434 2010-04-28 00:20:16Z kwc $
+# Revision $Id$
 """
 TCPROS connection protocol.
 

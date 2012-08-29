@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: context.py 15826 2012-01-06 03:12:21Z kwc $
+# Revision $Id$
 
 """
 L{WtfContext} object, which is commonly used throughout the roswtf

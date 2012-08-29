@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: rostestutil.py 15174 2011-10-10 21:00:35Z kwc $
+# Revision $Id$
 
 """
 rostest helper routines.

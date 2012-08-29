@@ -31,7 +31,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: __init__.py 16837 2012-07-13 17:50:36Z dthomas $
+# Revision $Id$
 
 # make sure we aren't using floor division
 from __future__ import division, print_function

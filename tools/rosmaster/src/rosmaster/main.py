@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: main.py 15513 2011-12-30 01:52:17Z kwc $
+# Revision $Id$
 
 """Command-line handler for ROS zenmaster (Python Master)"""
 

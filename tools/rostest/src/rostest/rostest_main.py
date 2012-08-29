@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: rostest_main.py 16293 2012-02-14 23:45:41Z kwc $
+# Revision $Id$
 
 from __future__ import print_function
 

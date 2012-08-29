@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: service.py 15096 2011-10-05 21:03:22Z kwc $
+# Revision $Id$
 
 """Base-classes and management of ROS services.
 See L{rospy.tcpros_service} for actual implementation."""

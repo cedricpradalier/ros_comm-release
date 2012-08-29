@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: tcpros_base.py 16645 2012-04-13 16:03:54Z kwc $
+# Revision $Id$
 
 """Internal use: common TCPROS libraries"""
 

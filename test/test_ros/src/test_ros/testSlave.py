@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: testSlave.py 13513 2011-03-20 00:30:18Z kwc $
+# Revision $Id$
 
 import os
 import sys

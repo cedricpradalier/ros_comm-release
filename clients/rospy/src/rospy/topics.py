@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: topics.py 16646 2012-04-13 16:09:34Z kwc $
+# Revision $Id$
 
 """
 rospy implementation of topics.

@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: numpy_msg.py 6163 2009-09-17 02:45:57Z kwc $
+# Revision $Id$
 
 """
 Support for using numpy with rospy messages.

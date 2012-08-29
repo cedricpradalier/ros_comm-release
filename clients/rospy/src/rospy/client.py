@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: client.py 16352 2012-02-21 01:45:22Z kwc $
+# Revision $Id$
 
 """
 Additional ROS client API methods.

@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: udpros.py 15506 2011-12-30 01:50:12Z kwc $
+# Revision $Id$
 
 from __future__ import print_function
 

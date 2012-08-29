@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: parent.py 16525 2012-03-14 04:07:41Z kwc $
+# Revision $Id$
 
 """
 roslaunch.parent providees the L{ROSLaunchParent} implementation,

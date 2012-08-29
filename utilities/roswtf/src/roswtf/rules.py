@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: rules.py 7670 2010-01-01 00:57:15Z kwc $
+# Revision $Id$
 
 """
 Common library for writing rule-style checks for generating warnings

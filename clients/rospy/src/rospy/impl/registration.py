@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: registration.py 14618 2011-08-09 16:37:22Z kwc $
+# Revision $Id$
 
 """Internal use: handles maintaining registrations with master via internal listener APIs"""
 

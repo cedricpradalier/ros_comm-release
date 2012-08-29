@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: pmon.py 14282 2011-07-13 02:29:10Z kwc $
+# Revision $Id$
 
 """
 Process monitoring implementation for roslaunch.

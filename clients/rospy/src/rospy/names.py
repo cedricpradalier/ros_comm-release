@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: names.py 16814 2012-07-03 03:50:15Z dthomas $
+# Revision $Id$
 
 """
 Support for ROS Names

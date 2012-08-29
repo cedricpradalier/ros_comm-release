@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: msg.py 15719 2012-01-05 02:41:24Z kwc $
+# Revision $Id$
 
 """Internal use: Support for ROS messages, including network serialization routines"""
 
