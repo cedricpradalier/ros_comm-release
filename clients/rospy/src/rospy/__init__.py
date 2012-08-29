@@ -31,7 +31,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # Copyright (c) 2008, Willow Garage, Inc.
-# Revision $Id: __init__.py 15697 2012-01-05 00:28:44Z kwc $
+# Revision $Id$
 
 """
 ROS client library for Python.

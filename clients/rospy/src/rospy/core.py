@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: core.py 16431 2012-03-01 18:49:41Z kwc $
+# Revision $Id$
 
 """rospy internal core implementation library"""
 

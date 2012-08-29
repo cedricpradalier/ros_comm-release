@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: __init__.py 15697 2012-01-05 00:28:44Z kwc $
+# Revision $Id$
 
 from .main import rosmaster_main
 

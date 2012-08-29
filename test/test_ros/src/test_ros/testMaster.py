@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: testMaster.py 3803 2009-02-11 02:04:39Z rob_wheeler $
+# Revision $Id$
 """
 testMaster: ROS integration test cases for master XML-RPC API
 

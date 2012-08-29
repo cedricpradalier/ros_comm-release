@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: masterslave.py 15557 2011-12-31 00:27:05Z kwc $
+# Revision $Id$
 """
 Internal use: ROS Node (Slave) API. 
 

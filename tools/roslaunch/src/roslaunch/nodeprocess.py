@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: nodeprocess.py 16568 2012-03-21 21:21:14Z kruset $
+# Revision $Id$
 
 """
 Local process implementation for running and monitoring nodes.

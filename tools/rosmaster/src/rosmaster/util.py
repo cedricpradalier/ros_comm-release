@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: util.py 8327 2010-02-17 01:23:15Z kwc $
+# Revision $Id$
 
 """
 Utility routines for rosmaster.

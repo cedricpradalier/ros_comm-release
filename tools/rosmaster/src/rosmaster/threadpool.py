@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: threadpool.py 16264 2012-02-08 03:12:32Z kwc $
+# Revision $Id$
 
 """
 Internal threadpool library for zenmaster.

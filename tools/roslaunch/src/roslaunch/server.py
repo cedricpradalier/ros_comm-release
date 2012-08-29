@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: server.py 16175 2012-01-31 00:50:19Z kwc $
+# Revision $Id$
 
 """
 XML-RPC servers for parent and children

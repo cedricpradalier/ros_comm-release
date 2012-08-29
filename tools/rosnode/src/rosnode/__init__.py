@@ -31,7 +31,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: __init__.py 16826 2012-07-05 20:29:31Z dthomas $
+# Revision $Id$
 
 """
 rosnode implements the rosnode command-line tool and also provides a

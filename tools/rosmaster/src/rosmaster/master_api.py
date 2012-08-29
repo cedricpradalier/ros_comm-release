@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: master_api.py 16264 2012-02-08 03:12:32Z kwc $
+# Revision $Id$
 """
 ROS Master API. 
 

@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: roslaunchwtf.py 16160 2012-01-27 01:54:46Z gerkey $
+# Revision $Id$
 
 import os
 import itertools

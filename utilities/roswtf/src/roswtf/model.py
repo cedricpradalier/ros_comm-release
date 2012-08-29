@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: model.py 7670 2010-01-01 00:57:15Z kwc $
+# Revision $Id$
 
 """
 Error and Warning representation. The roswtf.rules module simplifies

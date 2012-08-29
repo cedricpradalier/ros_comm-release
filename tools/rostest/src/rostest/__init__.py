@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: __init__.py 15140 2011-10-07 19:42:04Z kwc $
+# Revision $Id$
 
 """
 Interface for using rostest from other Python code as well as running

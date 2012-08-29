@@ -31,7 +31,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: hztest 15750 2012-01-05 04:56:23Z kwc $
+# Revision $Id$
 
 ## Integration test node that subscribes to any topic and verifies
 ## the publishing rate to be within a specified bounds. The following

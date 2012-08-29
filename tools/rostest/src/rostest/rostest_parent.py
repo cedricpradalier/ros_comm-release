@@ -30,7 +30,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# Revision $Id: rostest_parent.py 15886 2012-01-08 18:26:14Z gerkey $
+# Revision $Id$
 
 import logging
 import sys
