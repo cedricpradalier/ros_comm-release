@@ -23,8 +23,15 @@ namespace ros
 #endif
         Loaders() {
 #ifdef USE_CLASS_LOADER
-            transports_.reset(new pluginlib::ClassLoader<TransportPlugin>("ros_transport_plugins", "ros::TransportPlugin"));
-            filters_.reset(new pluginlib::ClassLoader<TransportFilterPlugin>("ros_transport_plugins", "ros::TransportFilterPlugin"));
+            try {
+                transports_.reset(new pluginlib::ClassLoader<TransportPlugin>("ros_transport_plugins", "ros::TransportPlugin"));
+                filters_.reset(new pluginlib::ClassLoader<TransportFilterPlugin>("ros_transport_plugins", "ros::TransportFilterPlugin"));
+            } catch(pluginlib::LibraryLoadException& ex){
+                // if it fails here, then we have a big problem
+                ROS_ERROR("Failed to instantiate class loader. Error: %s", ex.what());
+                transports_.reset();
+                filters_.reset();
+            }
 #endif
         };
 
@@ -122,28 +129,38 @@ namespace ros
         ROS_DEBUG("Loading dynamic plugins");
         loaders_.reset(new Loaders());
 #ifdef USE_CLASS_LOADER
-        std::vector< std::string > plugin_names = loaders_->transports_->getDeclaredClasses();
-        for (unsigned int i=0;i < plugin_names.size(); i++) {
-            try{
-                TransportPluginPtr transport = loaders_->transports_->createInstance(plugin_names[i]);
-                loadPlugin(transport);
-                ROS_DEBUG("Registered transport plugin %s for protocol %s",
-                        transport->getName().c_str(),transport->getProtocolName().c_str());
-            } catch(pluginlib::PluginlibException& ex){
-                //handle the class failing to load
-                ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+        if (loaders_->transports_) {
+            std::vector< std::string > plugin_names = loaders_->transports_->getDeclaredClasses();
+            for (unsigned int i=0;i < plugin_names.size(); i++) {
+                try{
+                    TransportPluginPtr transport = loaders_->transports_->createInstance(plugin_names[i]);
+                    loadPlugin(transport);
+                    ROS_DEBUG("Registered transport plugin %s for protocol %s",
+                            transport->getName().c_str(),transport->getProtocolName().c_str());
+                } catch(pluginlib::LibraryLoadException& ex){
+                    //handle the class failing to load
+                    ROS_ERROR("The library failed to load for some reason. Error: %s", ex.what());
+                } catch(pluginlib::PluginlibException& ex){
+                    //handle the class failing to load
+                    ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+                }
             }
-        }
+        } 
 
-        std::vector< std::string > filter_names = loaders_->filters_->getDeclaredClasses();
-        for (unsigned int i=0;i < filter_names.size(); i++) {
-            try{
-                TransportFilterPluginPtr filter = loaders_->filters_->createInstance(filter_names[i]);
-                loadFilter(filter);
-                ROS_DEBUG("Registered transport filter plugin %s", filter->getName().c_str());
-            } catch(pluginlib::PluginlibException& ex){
-                //handle the class failing to load
-                ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+        if (loaders_->filters_) {
+            std::vector< std::string > filter_names = loaders_->filters_->getDeclaredClasses();
+            for (unsigned int i=0;i < filter_names.size(); i++) {
+                try{
+                    TransportFilterPluginPtr filter = loaders_->filters_->createInstance(filter_names[i]);
+                    loadFilter(filter);
+                    ROS_DEBUG("Registered transport filter plugin %s", filter->getName().c_str());
+                } catch(pluginlib::LibraryLoadException& ex){
+                    //handle the class failing to load
+                    ROS_ERROR("The library failed to load for some reason. Error: %s", ex.what());
+                } catch(pluginlib::PluginlibException& ex){
+                    //handle the class failing to load
+                    ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+                }
             }
         }
 #endif

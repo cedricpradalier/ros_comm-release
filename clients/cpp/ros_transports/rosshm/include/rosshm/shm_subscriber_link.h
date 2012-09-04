@@ -25,49 +25,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ROSCPP_COMMON_H
-#define ROSCPP_COMMON_H
+#ifndef ROSSHM_SHM_SUBSCRIBER_LINK_H
+#define ROSSHM_SHM_SUBSCRIBER_LINK_H
+#include "ros/common.h"
+#include "ros/subscriber_link.h"
 
-#include <stdint.h>
-#include <assert.h>
-#include <stddef.h>
-#include <string>
+#include <boost/signals/connection.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
+#include "rosshm/SharedMemoryBlock.h"
 
-#include "ros/assert.h"
-#include "ros/forwards.h"
-#include "ros/serialized_message.h"
-
-#include <boost/shared_array.hpp>
-
-#define ROS_VERSION_MAJOR 1
-#define ROS_VERSION_MINOR 8
-#define ROS_VERSION_PATCH 12
-#define ROS_VERSION_COMBINED(major, minor, patch) (((major) << 20) | ((minor) << 10) | (patch))
-#define ROS_VERSION ROS_VERSION_COMBINED(ROS_VERSION_MAJOR, ROS_VERSION_MINOR, ROS_VERSION_PATCH)
-
-#define ROS_VERSION_GE(major1, minor1, patch1, major2, minor2, patch2) (ROS_VERSION_COMBINED(major1, minor1, patch1) >= ROS_VERSION_COMBINED(major2, minor2, patch2))
-#define ROS_VERSION_MINIMUM(major, minor, patch) ROS_VERSION_GE(ROS_VERSION_MAJOR, ROS_VERSION_MINOR, ROS_VERSION_PATCH, major, minor, patch)
-
-#include <ros/macros.h>
-
-// Import/export for windows dll's and visibility for gcc shared libraries.
-
-#ifdef ROS_BUILD_SHARED_LIBS // ros is being built around shared libraries
-  #ifdef roscpp_EXPORTS // we are building a shared lib/dll
-    #define ROSCPP_DECL ROS_HELPER_EXPORT
-  #else // we are using shared lib/dll
-    #define ROSCPP_DECL ROS_HELPER_IMPORT
-  #endif
-#else // ros is being built around static libraries
-  #define ROSCPP_DECL
-#endif
-
-namespace ros
+namespace rosshm
 {
 
-void disableAllSignalsInThisThread();
+    /**
+     * \brief SubscriberLink handles broadcasting messages to a single subscriber on a single topic
+     */
+    class ROSCPP_DECL SHMSubscriberLink : public ros::SubscriberLink {
+        public:
+            SHMSubscriberLink();
+            virtual ~SHMSubscriberLink();
 
-}
+            //
+            bool initialize(const std::string & segment_name, const std::string & topic_name,
+                    const std::string & filter_string);
+            bool handleHeader(const ros::Header& header);
 
-#endif
+            virtual void enqueueMessage(const ros::SerializedMessage& m, bool ser, bool nocopy);
+            virtual void drop();
+            virtual std::string getTransportType();
 
+        protected:
+
+            boost::interprocess::managed_shared_memory *segment_ ;
+            SharedMemoryBlock *blockmgr_;
+			bool clientRegistered;
+
+			// This will be modified after the first image is received, so we
+			// mark them mutable and publish stays "const"
+            shm_handle shm_handle_;
+    };
+    typedef boost::shared_ptr<SHMSubscriberLink> SHMSubscriberLinkPtr;
+
+} // namespace rosshm
+
+#endif // ROSSHM_SHM_SUBSCRIBER_LINK_H

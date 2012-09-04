@@ -18,12 +18,13 @@
   <license>BSD</license>
   <review status="Doc reviewed"/>
   <url>http://ros.org/wiki/roscpp</url>
-  <depend package="pluginlib"/>
   <depend package="roslang"/>
+  <depend package="pluginlib"/>
   <export>
     <cpp cflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --cflags roscpp`"
          lflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --libs roscpp`"/>
     <roslang cmake="${prefix}/rosbuild/roscpp.cmake"/>
+  </export>
   </export>
   <rosdep name="pkg-config"/>
 

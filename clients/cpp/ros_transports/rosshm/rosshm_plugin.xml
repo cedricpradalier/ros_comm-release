@@ -1,0 +1,8 @@
+<library path="lib/librosshm">
+    <class name="rosshm/SHMTransportPlugin" type="rosshm::SHMTransportPlugin" base_class_type="ros::TransportPlugin">
+        <description>
+            This is a shared memory implementation of the message transport
+            system for ROS topics
+        </description>
+    </class>
+</library>

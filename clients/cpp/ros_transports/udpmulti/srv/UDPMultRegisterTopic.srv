@@ -1,0 +1,5 @@
+string topic
+string filter
+---
+string multicast_address
+uint16 port

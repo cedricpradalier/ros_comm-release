@@ -25,49 +25,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ROSCPP_COMMON_H
-#define ROSCPP_COMMON_H
+#ifndef UDP_MULTICAST_SUBSCRIBER_LINK_H
+#define UDP_MULTICAST_SUBSCRIBER_LINK_H
+#include "ros/common.h"
+#include "ros/subscriber_link.h"
 
-#include <stdint.h>
-#include <assert.h>
-#include <stddef.h>
-#include <string>
+#include <boost/asio.hpp>
 
-#include "ros/assert.h"
-#include "ros/forwards.h"
-#include "ros/serialized_message.h"
 
-#include <boost/shared_array.hpp>
-
-#define ROS_VERSION_MAJOR 1
-#define ROS_VERSION_MINOR 8
-#define ROS_VERSION_PATCH 12
-#define ROS_VERSION_COMBINED(major, minor, patch) (((major) << 20) | ((minor) << 10) | (patch))
-#define ROS_VERSION ROS_VERSION_COMBINED(ROS_VERSION_MAJOR, ROS_VERSION_MINOR, ROS_VERSION_PATCH)
-
-#define ROS_VERSION_GE(major1, minor1, patch1, major2, minor2, patch2) (ROS_VERSION_COMBINED(major1, minor1, patch1) >= ROS_VERSION_COMBINED(major2, minor2, patch2))
-#define ROS_VERSION_MINIMUM(major, minor, patch) ROS_VERSION_GE(ROS_VERSION_MAJOR, ROS_VERSION_MINOR, ROS_VERSION_PATCH, major, minor, patch)
-
-#include <ros/macros.h>
-
-// Import/export for windows dll's and visibility for gcc shared libraries.
-
-#ifdef ROS_BUILD_SHARED_LIBS // ros is being built around shared libraries
-  #ifdef roscpp_EXPORTS // we are building a shared lib/dll
-    #define ROSCPP_DECL ROS_HELPER_EXPORT
-  #else // we are using shared lib/dll
-    #define ROSCPP_DECL ROS_HELPER_IMPORT
-  #endif
-#else // ros is being built around static libraries
-  #define ROSCPP_DECL
-#endif
-
-namespace ros
+namespace udpmulti
 {
 
-void disableAllSignalsInThisThread();
+    /**
+     * \brief SubscriberLink handles broadcasting messages to a single subscriber on a single topic
+     */
+    class ROSCPP_DECL UDPMultiSubscriberLink : public ros::SubscriberLink {
+        public:
+            // TODO: use a dynamic value acquired from OS
+            static const unsigned int MAX_UDP_PACKET_SIZE = 8092;
 
-}
+            UDPMultiSubscriberLink();
+            virtual ~UDPMultiSubscriberLink();
 
-#endif
+            //
+            bool initialize(const std::string & multicast_ip, unsigned int multicast_port);
+            bool handleHeader(const ros::Header& header);
 
+            virtual void enqueueMessage(const ros::SerializedMessage& m, bool ser, bool nocopy);
+            virtual void drop();
+            virtual std::string getTransportType();
+
+        protected:
+            uint32_t port_;
+			std::string multicast_address_;
+            boost::asio::io_service io_service_;
+            boost::asio::ip::udp::endpoint *endpoint_;
+            boost::asio::ip::udp::socket *socket_;
+    };
+    typedef boost::shared_ptr<UDPMultiSubscriberLink> UDPMultiSubscriberLinkPtr;
+
+} // namespace udpmulti
+
+#endif // UDP_MULTICAST_SUBSCRIBER_LINK_H

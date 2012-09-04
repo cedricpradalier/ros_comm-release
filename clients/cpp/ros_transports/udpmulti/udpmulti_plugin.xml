@@ -1,0 +1,8 @@
+<library path="lib/libudpmulti">
+    <class name="udpmulti/UDPMultiTransportPlugin" type="udpmulti::UDPMultiTransportPlugin" base_class_type="ros::TransportPlugin">
+        <description>
+            This is a udp multicasting implementation of the message transport
+            system for ROS topics, relying heavily on ROS
+        </description>
+    </class>
+</library>

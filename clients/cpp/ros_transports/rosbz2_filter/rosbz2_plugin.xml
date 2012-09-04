@@ -1,0 +1,7 @@
+<library path="lib/librosbz2_filter">
+    <class name="rosbz2_filter/BZ2TransportFilterPlugin" type="rosbz2_filter::BZ2TransportFilterPlugin" base_class_type="ros::TransportFilterPlugin">
+        <description>
+            This is a message filter using bz2 to compress data before sending.
+        </description>
+    </class>
+</library>

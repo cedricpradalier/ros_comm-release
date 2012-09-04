@@ -1,0 +1,20 @@
+<package>
+  <description brief="rosbz2_filter">
+
+     rosbz2_filter
+
+  </description>
+  <author>Cedric Pradalier</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/rosbz2_filter</url>
+  <depend package="roscpp"/>
+  <depend package="pluginlib"/>
+  <depend package="ros_transport_plugins"/>
+  <export>
+      <ros_transport_plugins plugin="${prefix}/rosbz2_plugin.xml" />
+  </export>
+
+</package>
+
+
