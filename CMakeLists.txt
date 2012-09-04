@@ -18,6 +18,10 @@ foreach(subdir
     utilities/xmlrpcpp
     tools/rosconsole
     clients/cpp/roscpp
+    clients/cpp/ros_transports/ros_transport_plugins
+    clients/cpp/ros_transports/rosshm
+    clients/cpp/ros_transports/udpmulti
+    clients/cpp/ros_transports/rosbz2_filter
     clients/roslisp
     tools
     utilities/message_filters
